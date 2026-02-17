@@ -1,7 +1,6 @@
-import { headers } from 'next/headers';
+export const dynamic = 'force-dynamic'
+
 import { Suspense } from 'react';
-
-
 
 async function FetchData({ auth, label }: { auth: string; label?: string }) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/random-date`, {
