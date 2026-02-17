@@ -1,6 +1,7 @@
 export const dynamic = 'force-dynamic'
 
 import { Suspense } from 'react';
+import Link from 'next/link';
 
 async function FetchData({ auth, label }: { auth: string; label?: string }) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/random-date`, {
@@ -43,6 +44,14 @@ export default function RevalidateTestPage() {
         <p>このページは 10 秒の <code>revalidate</code> を設定した fetch を行います。</p>
         <p>異なる <code>Authorization</code> ヘッダーを持つリクエストがそれぞれ独立してキャッシュされるかを確認します。</p>
         <p className="mt-2 text-sm italic">Page Rendered at: {currentTime}</p>
+        <div className="mt-4">
+          <Link
+            href="/other"
+            className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-colors"
+          >
+            Go to Other Page (Navigation Test) →
+          </Link>
+        </div>
       </div>
 
       <div className="space-y-8">
