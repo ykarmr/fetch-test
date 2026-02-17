@@ -17,5 +17,3 @@ export async function GET(request: Request) {
     });
 }
 
-// 動的レンダリングを強制（API自体がキャッシュされないようにする）
-export const dynamic = 'force-dynamic';
