@@ -7,7 +7,7 @@ async function FetchData({ auth, label }: { auth: string; label?: string }) {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
     const res = await fetch(`${baseUrl}/api/random-date`, {
         headers: {
-            'Authorization': auth,
+            'Cookie': `auth-token=${auth}`,
         },
         next: { revalidate: 10 },
     });
@@ -21,7 +21,7 @@ async function FetchData({ auth, label }: { auth: string; label?: string }) {
     return (
         <div className="p-4 border rounded-lg shadow-sm bg-green-50 dark:bg-green-900/20 mb-4 border-green-200">
             <h2 className="text-xl font-bold text-green-700 dark:text-green-400 mb-2">{label}</h2>
-            <p className="text-sm mb-2"><strong>Auth:</strong> {auth}</p>
+            <p className="text-sm mb-2"><strong>Cookie:</strong> auth-token={auth}</p>
             <div className="font-mono text-sm">
                 <p>Date: {data.date}</p>
                 <p>Random: {data.random}</p>

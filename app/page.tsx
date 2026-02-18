@@ -6,7 +6,7 @@ import Link from 'next/link';
 async function FetchData({ auth, label }: { auth: string; label?: string }) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/random-date`, {
     headers: {
-      'Authorization': auth,
+      'Cookie': `auth-token=${auth}`,
     },
     next: { revalidate: 10 }, // 10秒間キャッシュ
   });
@@ -19,7 +19,7 @@ async function FetchData({ auth, label }: { auth: string; label?: string }) {
         <h2 className="text-xl font-bold italic text-blue-600 dark:text-blue-400">{label}</h2>
       </div>
       <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
-        <strong>Auth:</strong> <code className="bg-gray-100 dark:bg-gray-700 px-1 rounded text-xs">{auth}</code>
+        <strong>Cookie:</strong> <code className="bg-gray-100 dark:bg-gray-700 px-1 rounded text-xs">auth-token={auth}</code>
       </p>
       <div className="space-y-1">
         <p className="text-xs text-gray-500">Random Date from API:</p>
@@ -37,12 +37,12 @@ export default function RevalidateTestPage() {
   return (
     <div className="p-8 max-w-4xl mx-auto">
       <h1 className="text-3xl font-extrabold mb-6 text-gray-900 dark:text-white">
-        Fetch Revalidate & Auth Header Verification
+        Fetch Revalidate & Cookie Authentication Verification
       </h1>
 
       <div className="mb-8 p-4 bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-400 text-yellow-800 dark:text-yellow-200">
         <p>このページは 10 秒の <code>revalidate</code> を設定した fetch を行います。</p>
-        <p>異なる <code>Authorization</code> ヘッダーを持つリクエストがそれぞれ独立してキャッシュされるかを確認します。</p>
+        <p>異なる <code>auth-token</code> クッキーを持つリクエストがそれぞれ独立してキャッシュされるかを確認します。</p>
         <p className="mt-2 text-sm italic">Page Rendered at: {currentTime}</p>
         <div className="mt-4">
           <Link
@@ -56,7 +56,7 @@ export default function RevalidateTestPage() {
 
       <div className="space-y-8">
         <section>
-          <h2 className="text-xl font-semibold mb-4 border-b pb-2">User A Groups (Shared Auth)</h2>
+          <h2 className="text-xl font-semibold mb-4 border-b pb-2">User A Groups (Shared Cookie)</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Suspense fallback={<div>Loading A1...</div>}>
               <FetchData auth="Bearer token-aaa" label="Component A1" />
@@ -67,12 +67,12 @@ export default function RevalidateTestPage() {
             </Suspense>
           </div>
           <p className="mt-2 text-sm text-gray-500 italic">
-            A1 と A2 は同じエンドポイントと認証ヘッダーを使用しています。Next.js のリクエストデデュプリケーションにより、同じ値が表示されるはずです。
+            A1 と A2 は同じエンドポイントとクッキー値を使用しています。Next.js のリクエストデデュプリケーションにより、同じ値が表示されるはずです。
           </p>
         </section>
 
         <section>
-          <h2 className="text-xl font-semibold mb-4 border-b pb-2">User B Groups (Shared Auth)</h2>
+          <h2 className="text-xl font-semibold mb-4 border-b pb-2">User B Groups (Shared Cookie)</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Suspense fallback={<div>Loading B1...</div>}>
               <FetchData auth="Bearer token-bbb" label="Component B1" />

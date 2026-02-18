@@ -1,13 +1,15 @@
 import { NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
 
-export async function GET(request: Request) {
-    const auth = request.headers.get('authorization') || 'none';
+export async function GET() {
+    const cookieStore = await cookies();
+    const auth = cookieStore.get('auth-token')?.value || 'none';
 
     // ランダムな日付を生成（キャッシュ検証のため）
     const randomDate = new Date().toISOString();
     const randomNumber = Math.random();
 
-    console.log(`[API] Request received - Auth: ${auth}, Time: ${randomDate}`);
+    console.log(`[API] Request received - Cookie: ${auth}, Time: ${randomDate}`);
 
     return NextResponse.json({
         auth,
